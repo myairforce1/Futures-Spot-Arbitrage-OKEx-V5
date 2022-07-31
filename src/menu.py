@@ -203,23 +203,23 @@ async def main_menu(accountid: int):
         assert isinstance(accountid, int)
         fprint(f'{accountid=}')
         while (command := await ainput(loop, main_menu_text)) != 'q':
-            if command == '1':
+            if command == '1': # 监控现有仓位
                 _ = await Monitor(coin='BTC', account=accountid)
                 await gather(_.check_account_level(), _.check_position_mode())
                 await monitor_all(accountid)
                 await asyncio.sleep(2)
-            elif command == '2':
-                await crypto_menu(accountid)
-            elif command == '3':
+            elif command == '2': # 单一币种操作
+                await crypto_menu(accountid) 
+            elif command == '3': # 资金费数据
                 await funding_menu(accountid)
-            elif command == '4':
+            elif command == '4': # 账户数据
                 await account_menu(accountid)
-            elif command == '5':
+            elif command == '5': # 记录行情
                 multiprocessing.set_start_method('spawn', True)
                 process = multiprocessing.Process(target=record.record_ticker)
                 process.start()
                 process.join(0.2)
-            elif command == '6':
+            elif command == '6': # 任务管理器
                 await manager.menu()
             elif command == 'q':
                 break
